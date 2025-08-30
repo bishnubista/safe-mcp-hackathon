@@ -26,15 +26,15 @@ This pack lets participants run a minimal MCP server image for the event. It use
 
 Notes:
 - The container runs without network and with read-only FS. Flags are mounted read-only to `/opt/flags`.
-- Default image: `ghcr.io/bishnubista/safe-mcp-hackathon:hackathon-2025-08`.
+- Default image: `ghcr.io/bishnubista/safe-mcp-hackathon:hackathon`.
 - Override image: set `IMAGE=...` before running the script.
 
 ## MCP Client Examples
 
 - MCP Inspector (macOS/Linux):
-  - `npx @modelcontextprotocol/inspector -- docker run --rm -i --network none -v "$(pwd)/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon-2025-08`
+  - `npx @modelcontextprotocol/inspector -- docker run --rm -i --network none -v "$(pwd)/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon`
 - MCP Inspector (Windows PowerShell):
-  - `npx @modelcontextprotocol/inspector -- docker run --rm -i --network none -v "${PWD}/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon-2025-08`
+  - `npx @modelcontextprotocol/inspector -- docker run --rm -i --network none -v "${PWD}/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon`
 
 ## Troubleshooting
 
