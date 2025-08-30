@@ -32,7 +32,7 @@ What success looks like:
             "run","--platform","linux/amd64","--rm","-i",
             "--network","none",
             "-v","/ABS/PATH/flags:/opt/flags:ro",
-            "ghcr.io/bishnubista/safe-mcp-hackathon:hackathon-2025-08"
+            "ghcr.io/bishnubista/safe-mcp-hackathon:hackathon"
           ]
         }
       }
@@ -51,15 +51,15 @@ What success looks like:
 
 - Alternatively: MCP Inspector (no install)
   - macOS/Linux:
-    `npx @modelcontextprotocol/inspector -- docker run --platform linux/amd64 --rm -i --network none -v "$(pwd)/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon-2025-08`
+    `npx @modelcontextprotocol/inspector -- docker run --platform linux/amd64 --rm -i --network none -v "$(pwd)/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon`
   - Windows PowerShell:
-    `npx @modelcontextprotocol/inspector -- docker run --platform linux/amd64 --rm -i --network none -v "${PWD}/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon-2025-08`
+    `npx @modelcontextprotocol/inspector -- docker run --platform linux/amd64 --rm -i --network none -v "${PWD}/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon`
 
 - Safe mode variant (to validate mitigations):
   - macOS/Linux:
-    `npx @modelcontextprotocol/inspector -- docker run --platform linux/amd64 --rm -i --network none -e MODE=safe -v "$(pwd)/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon-2025-08`
+    `npx @modelcontextprotocol/inspector -- docker run --platform linux/amd64 --rm -i --network none -e MODE=safe -v "$(pwd)/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon`
   - Windows PowerShell:
-    `npx @modelcontextprotocol/inspector -- docker run --platform linux/amd64 --rm -i --network none -e MODE=safe -v "${PWD}/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon-2025-08`
+    `npx @modelcontextprotocol/inspector -- docker run --platform linux/amd64 --rm -i --network none -e MODE=safe -v "${PWD}/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon`
 
 Prereq: create a local `./flags/flag.txt` file before running.
 
@@ -96,7 +96,7 @@ Prereq: create a local `./flags/flag.txt` file before running.
 
 ## Image & Scripts
 
-- Public image: `ghcr.io/bishnubista/safe-mcp-hackathon:hackathon-2025-08`
+- Public image: `ghcr.io/bishnubista/safe-mcp-hackathon:hackathon`
 - Scripts: `scripts/run-unsafe.sh` / `scripts/run-safe.sh` (macOS/Linux) and `scripts\run-unsafe.cmd` / `scripts\run-safe.cmd` (Windows)
 
 ## Troubleshooting

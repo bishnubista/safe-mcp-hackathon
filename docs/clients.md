@@ -14,6 +14,16 @@ Official docs:
 - Claude Desktop: https://modelcontextprotocol.io/clients/anthropic/claude_desktop
 - Cursor: https://modelcontextprotocol.io/clients/cursor
 
+Pull the image first (recommended):
+
+- macOS/Linux:
+  `docker pull ghcr.io/bishnubista/safe-mcp-hackathon:hackathon`
+
+- Windows PowerShell:
+  `docker pull ghcr.io/bishnubista/safe-mcp-hackathon:hackathon`
+
+Note: If you previously used this image, pull again to ensure the latest. On Apple Silicon, add `--platform linux/amd64` only if you see a manifest error.
+
 All examples expect you have created a local `flags/flag.txt` and that Docker can access that folder.
 
 ## MCP Inspector
@@ -21,18 +31,18 @@ All examples expect you have created a local `flags/flag.txt` and that Docker ca
 Run without installing (uses `npx`):
 
 - macOS/Linux:
-  `npx @modelcontextprotocol/inspector -- docker run --platform linux/amd64 --rm -i --network none -v "$(pwd)/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon-2025-08`
+  `npx @modelcontextprotocol/inspector -- docker run --platform linux/amd64 --rm -i --network none -v "$(pwd)/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon`
 
 - Windows PowerShell:
-  `npx @modelcontextprotocol/inspector -- docker run --platform linux/amd64 --rm -i --network none -v "${PWD}/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon-2025-08`
+  `npx @modelcontextprotocol/inspector -- docker run --platform linux/amd64 --rm -i --network none -v "${PWD}/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon`
 
 Safe mode variant (adds an env var before the image):
 
 - macOS/Linux:
-  `npx @modelcontextprotocol/inspector -- docker run --platform linux/amd64 --rm -i --network none -e MODE=safe -v "$(pwd)/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon-2025-08`
+  `npx @modelcontextprotocol/inspector -- docker run --platform linux/amd64 --rm -i --network none -e MODE=safe -v "$(pwd)/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon`
 
 - Windows PowerShell:
-  `npx @modelcontextprotocol/inspector -- docker run --platform linux/amd64 --rm -i --network none -e MODE=safe -v "${PWD}/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon-2025-08`
+  `npx @modelcontextprotocol/inspector -- docker run --platform linux/amd64 --rm -i --network none -e MODE=safe -v "${PWD}/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon`
 
 In the UI:
 - Tools tab should list `notes_search` and `fs_read`.
@@ -74,7 +84,7 @@ Add or merge this JSON snippet (unsafe mode):
         "run","--platform","linux/amd64","--rm","-i",
         "--network","none",
         "-v","/ABS/PATH/flags:/opt/flags:ro",
-        "ghcr.io/bishnubista/safe-mcp-hackathon:hackathon-2025-08"
+        "ghcr.io/bishnubista/safe-mcp-hackathon:hackathon"
       ]
     }
   }
@@ -118,7 +128,7 @@ Step-by-step (UI):
         "run","--platform","linux/amd64","--rm","-i",
         "--network","none",
         "-v","/ABS/PATH/flags:/opt/flags:ro",
-        "ghcr.io/bishnubista/safe-mcp-hackathon:hackathon-2025-08"
+        "ghcr.io/bishnubista/safe-mcp-hackathon:hackathon"
       ]
     }
   }
