@@ -1,111 +1,40 @@
 # SAFE MCP Hackathon
 
-Your mission: investigate a vulnerable MCP server, identify the vulnerability, map it to relevant safe‑mcp techniques (https://github.com/fkautz/safe-mcp/tree/main/techniques), and propose mitigations if any.
+What this is about:
+- There is an intentional vulnerability in a demo MCP server. Your job is to find it, map it to one of the techniques from https://github.com/fkautz/safe-mcp/tree/main/techniques, and propose a mitigation. Treat it like a real investigation: gather evidence, reason about impact, map, then validate mitigation.
 
-Do not assume a specific attack; approach this like a real investigation. Gather evidence, reason about impact, map to techniques, then validate a mitigation.
+## Quickstart (2–3 minutes)
 
-## Deliverables Checklist
+- Pull the image: `docker pull ghcr.io/bishnubista/safe-mcp-hackathon:hackathon`
+  - Apple Silicon: add `--platform linux/amd64` only if you see a manifest error.
+- Prepare a flag file:
+  - macOS/Linux: `mkdir -p ./flags && echo "hello" > ./flags/flag.txt`
+  - Windows PowerShell: `New-Item -Type Directory -Force -Path .\flags | Out-Null; Set-Content .\flags\flag.txt "hello"`
+- Add the server to Claude Desktop (recommended): paste the JSON from “Detailed Guide”, then restart Claude and verify tools `notes_search`, `fs_read` appear.
+- Try it: ask “Find notes about welcome”. Then explicitly call tools:
+  - notes_search: `{ "query": "welcome" }`
+  - fs_read: `{ "path": "/opt/flags/flag.txt" }`
 
-- Technique mapping: list applicable safe‑mcp IDs (e.g., SAFE-T####) and why.
-- Evidence of impact: relevant tool metadata and a transcript/screenshot.
+Need step-by-step? See the Detailed Guide:
+- Detailed setup (Claude Desktop, Cursor, Inspector): [Detailed Guide](setup.md)
+
+## Deliverables (what to submit)
+
+- Technique mapping: list applicable safe‑mcp ID(s) (e.g., SAFE‑T####) and why.
+- Evidence: relevant tool metadata and a transcript/screenshot showing impact.
 - Mitigation: proposal (server/client/policy) and trade‑offs.
 - Validation: show the same flow with mitigation enabled and explain the outcome.
-- Repro: exact commands and client configuration used.
-- Length: keep it 1–2 pages; templated option: [`SUBMISSION_TEMPLATE.md`](SUBMISSION_TEMPLATE.md).
-
-What success looks like:
-- Clear identification of a concrete vulnerability and its impact.
-- Correct mapping to at least one safe‑mcp technique ID.
-- A plausible mitigation and validation that it prevents the issue.
-
-## Quick Start (Participants)
-
-- Recommended: Claude Desktop (GUI)
-  - Add an MCP server entry pointing to Docker.
-  - Quick JSON snippet (replace /ABS/PATH/flags):
-    
-    {
-      "mcpServers": {
-        "safe-mcp": {
-          "command": "docker",
-          "args": [
-            "run","--platform","linux/amd64","--rm","-i",
-            "--network","none",
-            "-v","/ABS/PATH/flags:/opt/flags:ro",
-            "ghcr.io/bishnubista/safe-mcp-hackathon:hackathon"
-          ]
-        }
-      }
-    }
-    
-    Safe mode: insert "-e","MODE=safe" before the image tag.
-    
-    Notes: Use an absolute host path; on Windows, escape backslashes in JSON.
-  - See full details in [clients.md](clients.md).
-
-## Client Guides
-
-- Claude Desktop setup (step-by-step): see [clients.md#claude-desktop-recommended](clients.md#claude-desktop-recommended)
-- Cursor setup (step-by-step): see [clients.md#cursor](clients.md#cursor)
-- Inspector quick check: see [clients.md#mcp-inspector](clients.md#mcp-inspector)
-
-- Alternatively: MCP Inspector (no install)
-  - macOS/Linux:
-    `npx @modelcontextprotocol/inspector -- docker run --platform linux/amd64 --rm -i --network none -v "$(pwd)/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon`
-  - Windows PowerShell:
-    `npx @modelcontextprotocol/inspector -- docker run --platform linux/amd64 --rm -i --network none -v "${PWD}/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon`
-
-- Safe mode variant (to validate mitigations):
-  - macOS/Linux:
-    `npx @modelcontextprotocol/inspector -- docker run --platform linux/amd64 --rm -i --network none -e MODE=safe -v "$(pwd)/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon`
-  - Windows PowerShell:
-    `npx @modelcontextprotocol/inspector -- docker run --platform linux/amd64 --rm -i --network none -e MODE=safe -v "${PWD}/flags:/opt/flags:ro" ghcr.io/bishnubista/safe-mcp-hackathon:hackathon`
-
-Prereq: create a local `./flags/flag.txt` file before running.
-
-## Suggested Workflow
-
-1. Connect a client (Inspector, Claude Desktop, or Cursor). See [clients.md](clients.md) for config and troubleshooting.
-2. Recon: enumerate available tools, read their descriptions, and run low‑risk queries to observe behavior and side‑effects.
-3. Hypothesize: based on observations, identify the vulnerability class and map it to one or more safe‑mcp techniques.
-4. Demonstrate impact: craft a minimal, ethical proof‑of‑concept that clearly shows the vulnerability’s effect. Capture transcripts/screenshots.
-5. Mitigate: propose mitigation(s) and explain trade‑offs. Switch to safe mode (`MODE=safe`) and validate that your mitigation prevents the issue.
-
-## What to Submit
-
-- Evidence: relevant tool metadata and an interaction transcript/screenshot showing the issue.
-- Mapping: link to the safe‑mcp technique(s) and explain the alignment.
-- Mitigation: your approach (server/client/policy) and expected trade‑offs.
-- Validation: show the same scenario in `MODE=safe` and explain the outcome.
-- Keep it 1–2 pages. You can use [`SUBMISSION_TEMPLATE.md`](SUBMISSION_TEMPLATE.md).
-
-## Timeline (3 hours)
-
-- 0–15m: Setup (pull image, configure client)
-- 15–60m: Recon (inspect tools & behavior)
-- 60–105m: Demonstrate impact (capture evidence)
-- 105–150m: Mapping + propose mitigation
-- 150–180m: Validate with `MODE=safe`, finalize submission
+- Keep it 1–2 pages. Template: [`SUBMISSION_TEMPLATE.md`](SUBMISSION_TEMPLATE.md).
 
 ## Rules & Safety
 
-- Only mount the provided `flags/` directory; do not mount sensitive host paths.
+- Only mount `flags/`; do not mount sensitive host paths.
 - Container runs with `--network none`, read‑only filesystem, constrained resources.
-- Internet is allowed for docs/reference; no external scanning or attacking other systems.
+- Internet allowed for docs/reference; no external scanning.
 - Keep transcripts local; do not share real secrets.
 
-## Image & Scripts
+## References
 
-- Public image: `ghcr.io/bishnubista/safe-mcp-hackathon:hackathon`
-- Scripts: `scripts/run-unsafe.sh` / `scripts/run-safe.sh` (macOS/Linux) and `scripts\run-unsafe.cmd` / `scripts\run-safe.cmd` (Windows)
-
-## Troubleshooting
-
-- “file not found”: create `./flags/flag.txt` in your current folder.
-- Volume mount issues: try an absolute host path on the left side of `-v`.
-- On Windows JSON, escape backslashes in paths.
-
-References:
 - MCP Inspector: https://modelcontextprotocol.io/inspector
 - Claude Desktop: https://modelcontextprotocol.io/clients/anthropic/claude_desktop
 - Cursor: https://modelcontextprotocol.io/clients/cursor
