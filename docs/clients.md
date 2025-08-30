@@ -112,39 +112,40 @@ Notes:
 
 ## Cursor
 
-Cursor supports the same `mcpServers` structure. Use the UI in current versions (refer to official docs for exact labels): https://modelcontextprotocol.io/clients/cursor
+Cursor supports the same `mcpServers` structure as Claude Desktop. Prefer the UI flow below. Official docs: https://modelcontextprotocol.io/clients/cursor
 
 Step-by-step (UI):
-1) Open Cursor Settings.
+1) Open Cursor Settings/Preferences.
 2) Search for "Model Context Protocol" or "MCP".
-3) Open the MCP Servers configuration (button like "Open MCP Servers").
-4) Paste this JSON (unsafe mode), adjust `/ABS/PATH/flags` to your absolute path:
+3) Open the MCP Servers page (button often labeled "Open MCP Servers").
+4) Add a server by pasting this JSON (unsafe mode). Replace `/ABS/PATH/flags` with your absolute path:
 
-{
-  "mcpServers": {
-    "safe-mcp": {
-      "command": "docker",
-      "args": [
-        "run","--platform","linux/amd64","--rm","-i",
-        "--network","none",
-        "-v","/ABS/PATH/flags:/opt/flags:ro",
-        "ghcr.io/bishnubista/safe-mcp-hackathon:hackathon"
-      ]
-    }
-  }
-}
+   {
+     "mcpServers": {
+       "safe-mcp": {
+         "command": "docker",
+         "args": [
+           "run","--platform","linux/amd64","--rm","-i",
+           "--network","none",
+           "-v","/ABS/PATH/flags:/opt/flags:ro",
+           "ghcr.io/bishnubista/safe-mcp-hackathon:hackathon"
+         ]
+       }
+     }
+   }
 
-Safe mode: insert `"-e","MODE=safe",` before the image tag in `args`.
+5) Safe mode (for mitigation validation): insert `"-e","MODE=safe"` before the image tag in `args`.
+6) Save and restart Cursor if the server does not appear immediately.
 
 ### Verify Setup
 
-- Open the MCP/Tools view and confirm `safe-mcp` appears with tools like `notes_search` and `fs_read`.
-- Run a benign test: ask, "Find notes about welcome" and confirm a normal response.
-- Optional: add `"-e","MODE=safe"` to `args` and repeat to validate behavior under mitigation.
+- Open the MCP/Tools view and confirm `safe-mcp` appears with tools `notes_search` and `fs_read`.
+- Run Notes search via Tools UI with Request JSON `{ "query": "welcome" }`.
+- Optional: enable safe mode and repeat to validate behavior.
 
 Key points:
-- Use an absolute host path in the `-v` mount.
-- On Apple Silicon, include `--platform linux/amd64`.
+- Use an absolute host path on the left side of `-v`.
+- On Apple Silicon, include `--platform linux/amd64` if you see a manifest error.
 - Use the safe mode variant to validate mitigation (`-e MODE=safe`).
 
 ## Troubleshooting
@@ -158,3 +159,4 @@ Key points:
 - Claude Desktop validation error like `FrontendRemoteMcpToolDefinition.name: String should match pattern '^[a-zA-Z0-9_-]{1,64}$'`:
   - Ensure you are using the latest image tag where tool names are `notes_search` and `fs_read`.
   - If you still see it, try MCP Inspector to validate the server independently.
+ - After a tool returns, you may see “unable to respond… start a new chat.” This is a known UI hiccup; the tool card is still valid evidence. Start a new chat to continue.
